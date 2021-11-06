@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using Nexus.Web.Handlers;
-
+using Nexus.Backend;
+using Nexus.Backend.Handlers;
 var builder = WebApplication.CreateBuilder(args);
 
 // Database
@@ -14,12 +14,16 @@ else
         builder.Configuration.GetConnectionString("Database"));
 }
 
+builder.Services.AddCors();
 // Swagger
 builder.Services.AddSwaggerGen();
 builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
-
+app.UseCors(c =>
+{
+    c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+});
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -31,27 +35,7 @@ if (app.Environment.IsDevelopment())
     });
 
 }
-
 app.MapNotes("/api/v1");
+app.MapSavedPassword("/api/v1");
+
 app.Run();
-
-
-
-public class NexusDbContext : DbContext
-{
-    public NexusDbContext(DbContextOptions<NexusDbContext> options)
-    {
-
-    }
-    // TODO: why I need this ?
-    protected override void OnConfiguring(DbContextOptionsBuilder options)
-        => options.UseSqlite("Data Source=nexus.db");
-    public DbSet<Note> Notes { get; set; }
-}
-
-public class Note
-{
-    public string Id { get; set; }
-    public string Title { get; set; }
-    public string Content { get; set; }
-}

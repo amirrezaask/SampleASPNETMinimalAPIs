@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Nexus.Shared.Models;
 
-namespace Nexus.Web.Handlers;
+namespace Nexus.Backend.Handlers;
 
 public static class NotesHandlers
 {

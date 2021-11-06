@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>89c3be66-ee55-4f2c-8d3b-297c0bfd44fe</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <RootNamespace>Nexus.Web</RootNamespace>
+    <RootNamespace>Nexus.Backend</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,6 +21,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.2.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.2.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Nexus.Shared\Nexus.Shared.csproj" />
   </ItemGroup>
 
 </Project>
