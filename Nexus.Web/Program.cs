@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Nexus.Web.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,25 +32,12 @@ if (app.Environment.IsDevelopment())
 
 }
 
-app.MapGet("/notes", async (NexusDbContext dbContext) => await dbContext.Notes.ToListAsync());
-app.MapPost("/notes", async (NexusDbContext dbContext, Note note) =>
-{
-    note.Id = Guid.NewGuid().ToString();
-    await dbContext.Notes.AddAsync(note);
-    await dbContext.SaveChangesAsync();
-    return note.Id;
-});
-app.MapGet("/notes/{id:guid}", async (string id, NexusDbContext dbContext) => await dbContext.Notes.FindAsync(id));
-app.MapDelete("/notes/{id:guid}", async (string id, NexusDbContext dbContext) =>
-{
-    dbContext.Remove(new Note {Id = id});
-    await dbContext.SaveChangesAsync();
-});
+app.MapNotes("/api/v1");
 app.Run();
 
 
 
-class NexusDbContext : DbContext
+public class NexusDbContext : DbContext
 {
     public NexusDbContext(DbContextOptions<NexusDbContext> options)
     {
@@ -58,10 +46,10 @@ class NexusDbContext : DbContext
     // TODO: why I need this ?
     protected override void OnConfiguring(DbContextOptionsBuilder options)
         => options.UseSqlite("Data Source=nexus.db");
-    public DbSet<Note> Notes { get; set; }
+    public DbSet<Note?> Notes { get; set; }
 }
 
-class Note
+public class Note
 {
     public string Id { get; set; }
     public string Title { get; set; }
