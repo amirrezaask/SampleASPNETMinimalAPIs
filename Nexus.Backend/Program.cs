@@ -46,7 +46,7 @@ public class NexusDbContext : DbContext
     // TODO: why I need this ?
     protected override void OnConfiguring(DbContextOptionsBuilder options)
         => options.UseSqlite("Data Source=nexus.db");
-    public DbSet<Note?> Notes { get; set; }
+    public DbSet<Note> Notes { get; set; }
 }
 
 public class Note
