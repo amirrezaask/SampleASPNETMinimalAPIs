@@ -13,17 +13,26 @@ else
     builder.Services.AddNpgsql<NexusDbContext>(
         builder.Configuration.GetConnectionString("Database"));
 }
+// Add Cors middleware
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "MyCORS",
+                      builder =>
+                      {
+                          builder.AllowAnyOrigin();
+                      });
+});
 
-builder.Services.AddCors();
 // Swagger
 builder.Services.AddSwaggerGen();
 builder.Services.AddEndpointsApiExplorer();
 
+// Build application DI
 var app = builder.Build();
-app.UseCors(c =>
-{
-    c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
-});
+
+// Cors Settings
+app.UseCors();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
