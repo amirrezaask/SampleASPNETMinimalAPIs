@@ -6,13 +6,11 @@ namespace Nexus.Backend;
 
 public class NexusDbContext : DbContext
 {
-    public NexusDbContext(DbContextOptions<NexusDbContext> options)
+    public NexusDbContext(DbContextOptions<NexusDbContext> options) : base(options)
     {
 
     }
-    // TODO: why I need this ?
-    protected override void OnConfiguring(DbContextOptionsBuilder options)
-        => options.UseSqlite("Data Source=nexus.db");
+    
     public DbSet<Note> Notes { get; set; }
     public DbSet<SavedPassword> SavedPasswords { get; set; }
 }
