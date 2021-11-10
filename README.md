@@ -1,10 +1,2 @@
-# Nexus
-
-Nexus is a self hosted cloud suit for simple personal needs.
-
-## Supported Items
-
-- Notes
-- Passwords
-- Photos
-- Videos
+# Sample ASPNET 6 application
+Simple application to showcase the new minimal APIs and how to test, authenticate, authorize new apis. 
