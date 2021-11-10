@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Nexus.Backend.Migrations
+namespace SampleASPNETMinimalAPIs.Backend.Migrations
 {
     public partial class CreateSavedPasswordsTable : Migration
     {

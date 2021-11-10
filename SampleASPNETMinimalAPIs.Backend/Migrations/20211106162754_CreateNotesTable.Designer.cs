@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Nexus.Backend.Migrations
+namespace SampleASPNETMinimalAPIs.Backend.Migrations
 {
-    [DbContext(typeof(NexusDbContext))]
+    [DbContext(typeof(SampleASPNETMinimalAPIsDbContext))]
     [Migration("20211106162754_CreateNotesTable")]
     partial class CreateNotesTable
     {

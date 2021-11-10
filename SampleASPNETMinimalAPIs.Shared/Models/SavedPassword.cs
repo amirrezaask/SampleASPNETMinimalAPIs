@@ -1,4 +1,4 @@
-﻿namespace Nexus.Shared.Models;
+﻿namespace SampleASPNETMinimalAPIs.Shared.Models;
 
 public class SavedPassword
 {

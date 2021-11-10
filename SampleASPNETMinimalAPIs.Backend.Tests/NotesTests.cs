@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using Nexus.Backend.Handlers;
-using Nexus.Shared.Models;
+using SampleASPNETMinimalAPIs.Backend.Handlers;
+using SampleASPNETMinimalAPIs.Shared.Models;
 using Xunit;
 
-namespace Nexus.Backend.Tests;
+namespace SampleASPNETMinimalAPIs.Backend.Tests;
 
 public class NotesTests : BaseHandlerTest
 {
@@ -21,10 +21,10 @@ public class NotesTests : BaseHandlerTest
             Content = "test content 1"
         });
         _dbContext.SaveChanges();
-        
+
         // Act
         var notes = NotesHandlers.GetNotes(_dbContext).Result;
-        
+
         // Assert
         Assert.Single(notes);
     }

@@ -1,6 +1,12 @@
-﻿namespace Nexus.Backend.Handlers;
+﻿namespace SampleASPNETMinimalAPIs.Backend.Handlers;
 
-public static class WebApplicationExtensions {
+public static class WebApplicationExtensions
+{
+    public static void MapAuth(this WebApplication app, string prefix)
+    {
+        app.MapPost($"{prefix}/auth/register", AuthHandler.Register);
+        app.MapPost($"{prefix}/auth/login", AuthHandler.Login);
+    }
     public static void MapNotes(this WebApplication app, string prefix)
     {
         app.MapGet($"{prefix}/notes", NotesHandlers.GetNotes).WithTags("Notes");
@@ -16,5 +22,5 @@ public static class WebApplicationExtensions {
         app.MapGet($"{prefix}/saved_password/" + "{id:guid}", NotesHandlers.GetNote).WithTags("Saved Passwords");
         app.MapDelete($"{prefix}/saved_password/" + "{id:guid}", NotesHandlers.DeleteNote).WithTags("Saved Passwords");
     }
-    
+
 }
