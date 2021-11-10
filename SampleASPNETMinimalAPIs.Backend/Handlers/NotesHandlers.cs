@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SampleASPNETMinimalAPIs.Shared.Models;
 
@@ -12,6 +14,7 @@ public static class NotesHandlers
 
     public static async Task<string> AddNote(SampleASPNETMinimalAPIsDbContext dbContext, Note note)
     {
+        
         note.Id = Guid.NewGuid().ToString();
         await dbContext.Notes.AddAsync(note);
         await dbContext.SaveChangesAsync();
