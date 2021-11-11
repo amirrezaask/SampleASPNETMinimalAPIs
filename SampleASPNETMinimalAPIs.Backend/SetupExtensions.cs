@@ -46,12 +46,12 @@ public static class SetupExtensions
         return fromConfiguration;
     }
 
-    public static WebApplicationBuilder WithJWTConfigurations(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder WithConfigurations(this WebApplicationBuilder builder)
     {
         builder.Services.AddSingleton(builder.Configuration.GetJWTConfigs());
         return builder;
     }
-    public static WebApplicationBuilder WithAuth(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder WithAuthentication(this WebApplicationBuilder builder)
     {
         var tokenValidationParameters = new TokenValidationParameters()
         {
@@ -73,15 +73,16 @@ public static class SetupExtensions
 
         return builder;
     }
-
+    /*
+     * Adds database services to DI container, In development environment it adds sqlite, and in production it adds
+     * PostgreSQL
+     */
     public static WebApplicationBuilder WithDB(this WebApplicationBuilder builder)
     {
-        // Database, in dev environment use sqlite
         if (builder.Environment.IsDevelopment())
         {
             builder.Services.AddSqlite<SampleASPNETMinimalAPIsDbContext>("Data Source=SampleASPNETMinimalAPIs.db");
         }
-// In Production environment use posgres
         else
         {
             builder.Services.AddNpgsql<SampleASPNETMinimalAPIsDbContext>(

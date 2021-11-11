@@ -1,7 +1,7 @@
 WebApplication
     .CreateBuilder(args)
-    .WithJWTConfigurations()
-    .WithAuth() // Adds Authentication and Authorization to DI
+    .WithConfigurations()
+    .WithAuthentication() // Adds Authentication and Authorization to DI
     .WithSwagger() // Adds Swagger stuff to DI
     .WithDB() // Adds Database to DI
     .Build() // Build the DI tree
