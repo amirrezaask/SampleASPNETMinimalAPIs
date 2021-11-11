@@ -17,20 +17,39 @@ public static class SetupExtensions
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 Type = SecuritySchemeType.ApiKey,
-                Description = "JWT Token",
+                Description = "JWT Bearer Token",
                 Name = "Authorization",
                 In = ParameterLocation.Header,
                 Scheme = JwtBearerDefaults.AuthenticationScheme
+            });
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] { }
+                }
             });
         });
         builder.Services.AddEndpointsApiExplorer();
         return builder;
     }
-    
+
     public static JWTConfigurations GetJWTConfigs(this IConfiguration configuration)
     {
         var fromConfiguration = configuration.GetSection("Jwt").Get<JWTConfigurations>();
         return fromConfiguration;
+    }
+
+    public static WebApplicationBuilder WithJWTConfigurations(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddSingleton(builder.Configuration.GetJWTConfigs());
+        return builder;
     }
     public static WebApplicationBuilder WithAuth(this WebApplicationBuilder builder)
     {
@@ -40,18 +59,21 @@ public static class SetupExtensions
             ValidateAudience = false,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetJWTConfigs().Secret))
+            IssuerSigningKey =
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetJWTConfigs().Secret))
         };
+        // Adds my validation config to DI for further usage.
         builder.Services.AddSingleton(tokenValidationParameters);
 
-// Adds Authentication using jwt.
-        builder.Services.AddAuthentication(o => { o.DefaultScheme = JwtBearerDefaults.AuthenticationScheme; })
+
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(o => { o.TokenValidationParameters = tokenValidationParameters; });
 
         builder.Services.AddAuthorization();
 
         return builder;
     }
+
     public static WebApplicationBuilder WithDB(this WebApplicationBuilder builder)
     {
         // Database, in dev environment use sqlite
@@ -62,7 +84,8 @@ public static class SetupExtensions
 // In Production environment use posgres
         else
         {
-            builder.Services.AddNpgsql<SampleASPNETMinimalAPIsDbContext>(builder.Configuration.GetConnectionString("Database"));
+            builder.Services.AddNpgsql<SampleASPNETMinimalAPIsDbContext>(
+                builder.Configuration.GetConnectionString("Database"));
         }
 
         return builder;
@@ -70,9 +93,6 @@ public static class SetupExtensions
 
     public static WebApplication ConfigurePipeline(this WebApplication app)
     {
-        app.UseAuthorization();
-        app.UseAuthentication();
-
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
@@ -83,6 +103,9 @@ public static class SetupExtensions
                 c.RoutePrefix = String.Empty;
             });
         }
+        
+        app.UseAuthentication();
+        app.UseAuthorization();
         return app;
     }
 }

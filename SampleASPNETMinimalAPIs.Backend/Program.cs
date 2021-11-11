@@ -1,9 +1,10 @@
-WebApplication.
-    CreateBuilder(args)
-    .WithAuth()
-    .WithSwagger()
-    .WithDB()
-    .Build()
-    .ConfigurePipeline()
-    .MapAPIs()
-    .Run();
+WebApplication
+    .CreateBuilder(args)
+    .WithJWTConfigurations()
+    .WithAuth() // Adds Authentication and Authorization to DI
+    .WithSwagger() // Adds Swagger stuff to DI
+    .WithDB() // Adds Database to DI
+    .Build() // Build the DI tree
+    .ConfigurePipeline() // Registers all middlewares and configures request pipeline.
+    .MapAPIs() // Map my Application APIs
+    .Run(); // Run Server :)
