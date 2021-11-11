@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using SampleASPNETMinimalAPIs.Backend.Handlers;
 using SampleASPNETMinimalAPIs.Shared.Models;
 using Xunit;
@@ -56,5 +54,20 @@ public class NotesTests : BaseHandlerTest
         _dbContext.SaveChanges();
         var note = NotesHandlers.GetNote(id, _dbContext).Result;
         Assert.Equal(id, note.Id);
+    }
+
+    [Fact]
+    public void DeleteNote()
+    {
+        var id = Guid.NewGuid().ToString();
+        _dbContext.Add(new Note()
+        {
+            Id = id,
+            Title = "title",
+            Content = "content"
+        });
+        _dbContext.SaveChanges();
+        NotesHandlers.DeleteNote(_dbContext, id).Wait();
+        Assert.Equal(0, _dbContext.Notes.Where(n => n.Id == id).Count());
     }
 }
